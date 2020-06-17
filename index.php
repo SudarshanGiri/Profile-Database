@@ -31,7 +31,7 @@
                echo "Name". $val['name'];
            }
        */     
-      $sql="select * from profile where first_name!='' ";
+      $sql="select * from profile";
       $stmt = $pdo->prepare($sql);
       $stmt->execute();
       //$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -44,7 +44,7 @@
                     <td><a href="view.php?profile_id= <?php echo $result["profile_id"] ?>"><?php echo $result['first_name']; ?></a></td>
                     <td><?php echo $result['headline']; ?></td>
                     <td><a href='edit.php?profile_id= <?php echo $result["profile_id"] ?>'> Edit</a>
-                        <a href="delete.php"> Delete</a>
+                        <a href="delete.php?profile_id= <?php echo $result["profile_id"] ?>"> Delete</a>
                     </td>
                </tr>
                <?php
