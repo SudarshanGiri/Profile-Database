@@ -1,10 +1,8 @@
-
 <?php
-if(isset($_POST['add'])){
-
-
-include 'dbcon.php';
 session_start();
+
+if(isset($_POST['add'])){
+include 'dbcon.php';
 $first_name=$_POST['first_name'];
 $last_name=$_POST['last_name'];
 $email=$_POST['email'];
@@ -40,7 +38,7 @@ header('Location: index.php');
     <title>Document</title>
 </head>
 <body>
-<h1>Adding Profile for </h1>
+<h1>Adding Profile for <?php echo $_SESSION['name']; ?></h1>
 <form method="post">
 <p>First Name:
 <input type="text" id="fname" name="first_name" size="60"/></p>
@@ -77,7 +75,7 @@ function validate(){
                 alert("All fields must be filled out");
                 return false;
             }
-            else if(!/^\w+@+$/.test(email)){
+            else if(!/@/.test(email)){
                 alert ("Email must contain @ ");
                 return false;
 

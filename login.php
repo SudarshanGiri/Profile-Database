@@ -13,6 +13,8 @@ if(isset($_POST['login'])){
     if ( $row !== false ) {
         session_start();
         $_SESSION['user_id'] = $row['user_id'];
+        $_SESSION['name'] = $row['name'];
+        
         // Redirect the browser to index.php
         header("Location: index.php");
         return;

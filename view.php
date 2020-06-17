@@ -7,7 +7,7 @@
       //$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
            while($result = $stmt->fetch()){
                ?>
-               <h2>Profile Details</h2>
+               <h2>Profile Information</h2>
                <p><h3>Firstname : <?php echo $result['first_name'] ?></h3></p>
                <p><h3>Lastname : <?php echo $result['last_name'] ?></h3></p>
                <p><h3>Email : <?php echo $result['email'] ?></h3></p>
