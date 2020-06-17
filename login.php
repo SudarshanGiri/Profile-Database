@@ -50,7 +50,7 @@ if(isset($_POST['login'])){
                 alert("Both fields must be filled out");
                 return false;
             }
-            else if(!/^\w+@+$/.test(em)){
+            else if(!/@/.test(em)){
                 alert ("Email must contain @ ");
                 return false;
 

@@ -10,7 +10,7 @@ $last_name=$_POST['last_name'];
 $email=$_POST['email'];
 $headline=$_POST['headline'];
 $summary=$_POST['summary'];
-if (!preg_match("/^\w+@+$/",$email)) {
+if (!preg_match("/@/",$email)) {
     echo "<h2><p class=\"alert-danger text-center\" ><strong>ERROR!</strong>Email must contain @</p></h2>";
   }
   else{
