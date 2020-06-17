@@ -1,31 +1,21 @@
 <?php
-            include 'dbcon.php';
-            /*$sql="select * from users";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-           foreach ($result as $val){
-               echo "Name". $val['name'];
-           }
-       */     
-      $sql="select * from profile where first_name!='' ";
+        include 'dbcon.php';
+        $p_id=$_REQUEST['profile_id'];
+      $sql="select * from profile where profile_id=$p_id";
       $stmt = $pdo->prepare($sql);
       $stmt->execute();
       //$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      ?><table border="1">
-      <tr><th>Name</th><th>Headline</th><th>Action</th><tr>
-      <?php
            while($result = $stmt->fetch()){
                ?>
-               <tr>
-                    <td><a href="view.php"><?php echo $result['first_name']; ?></a></td>
-                    <td><?php echo $result['headline']; ?></td>
-                    <td><a href="edit.php"> Edit</a>
-                        <a href="delete.php"> Delete</a>
-                    </td>
-               </tr>
+               <h2>Profile Details</h2>
+               <p><h3>Firstname : <?php echo $result['first_name'] ?></h3></p>
+               <p><h3>Lastname : <?php echo $result['last_name'] ?></h3></p>
+               <p><h3>Email : <?php echo $result['email'] ?></h3></p>
+               <p><h3>Headline : <?php echo $result['headline'] ?></p>
+               <p><h3>Summary : <?php echo $result['summary'] ?></h3></p>
+
                <?php
+             
        
 
-           }  ?></table>
+           }  ?>

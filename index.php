@@ -41,9 +41,9 @@
            while($result = $stmt->fetch()){
                ?>
                <tr>
-                    <td><a href="view.php"><?php echo $result['first_name']; ?></a></td>
+                    <td><a href="view.php?profile_id= <?php echo $result["profile_id"] ?>"><?php echo $result['first_name']; ?></a></td>
                     <td><?php echo $result['headline']; ?></td>
-                    <td><a href='edit.php?profile_id= <?php echo $_SESSION["profile_id"] ?>'> Edit</a>
+                    <td><a href='edit.php?profile_id= <?php echo $result["profile_id"] ?>'> Edit</a>
                         <a href="delete.php"> Delete</a>
                     </td>
                </tr>

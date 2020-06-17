@@ -46,7 +46,6 @@ if(isset($_POST['login'])){
             console.log ("Validating....");
             var pw = document.getElementById('pass').value;
             var em = document.getElementById('em').value;
-
             if (pw == null || pw == "" || em==null||em=="") {
                 alert("Both fields must be filled out");
                 return false;
