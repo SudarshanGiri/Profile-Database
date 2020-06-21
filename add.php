@@ -1,33 +1,84 @@
 <?php
-session_start();
+    include 'head.php';
+    session_start();
 
-if(isset($_POST['add'])){
-include 'dbcon.php';
-$first_name=$_POST['first_name'];
-$last_name=$_POST['last_name'];
-$email=$_POST['email'];
-$headline=$_POST['headline'];
-$summary=$_POST['summary'];
-if (!preg_match("/@/",$email)) {
-    echo "<h2><p class=\"alert-danger text-center\" ><strong>ERROR!</strong>Email must contain @</p></h2>";
-  }
-  else{
-    $stmt = $pdo->prepare('INSERT INTO Profile
-    (user_id, first_name, last_name, email, headline, summary)
-    VALUES ( :uid, :fn, :ln, :em, :he, :su)');
-$stmt->execute(array(
-    ':uid' => $_SESSION['user_id'],
-    ':fn' => $_POST['first_name'],
-    ':ln' => $_POST['last_name'],
-    ':em' => $_POST['email'],
-    ':he' => $_POST['headline'],
-    ':su' => $_POST['summary'])
-);
-header('Location: index.php');
-}
+    if(isset($_POST['add'])){
 
-      
-  }
+          
+
+        
+        include 'dbcon.php';
+        $first_name=$_POST['first_name'];
+        $last_name=$_POST['last_name'];
+        $email=$_POST['email'];
+        $headline=$_POST['headline'];
+        $summary=$_POST['summary'];
+        function validatePos() {
+            for($i=1; $i<=9; $i++) {
+                if ( ! isset($_POST['year'.$i]) ) continue;
+                if ( ! isset($_POST['desc'.$i]) ) continue;
+                $year = $_POST['year'.$i];
+                $desc = $_POST['desc'.$i];
+                if ( strlen($year) == 0 || strlen($desc) == 0 ) {
+                    echo "<h2><p class=\"alert-danger text-center\" ><strong>ERROR!!!</strong> All fields are required</p></h2>";
+                    return false;
+                }
+        
+                if ( ! is_numeric($year) ) {
+                    echo "<h2><p class=\"alert-danger text-center\" ><strong>ERROR!!!</strong> Position YEAR Must be numeric </p></h2>";
+                    return false;
+                }
+            }
+            return true;
+        }
+        if (validatePos()==false){
+            echo "Please Try again";
+        }
+
+        elseif (!preg_match("/@/",$email)) {
+            echo "<h2><p class=\"alert-danger text-center\" ><strong>ERROR!!!</strong>Email must contain @</p></h2>";
+        }
+        else{
+            $stmt = $pdo->prepare('INSERT INTO Profile
+            (user_id, first_name, last_name, email, headline, summary)
+            VALUES ( :uid, :fn, :ln, :em, :he, :su)');
+        $stmt->execute(array(
+            ':uid' => $_SESSION['user_id'],
+            ':fn' => $_POST['first_name'],
+            ':ln' => $_POST['last_name'],
+            ':em' => $_POST['email'],
+            ':he' => $_POST['headline'],
+            ':su' => $_POST['summary'])
+        );
+        $profile_id = $pdo->lastInsertId();
+        $rank=1;
+        for($i=1; $i<=9; $i++) {
+                $year = $_POST['year'.$i];
+                $desc = $_POST['desc'.$i];
+                if($year!==null){
+                    $stmt = $pdo->prepare('INSERT INTO Position
+                    (profile_id, rank, year, description) 
+                    VALUES ( :pid, :rank, :year, :desc)');
+                    $stmt->execute(array(
+                        ':pid' => $profile_id,
+                        ':rank' => $rank,
+                        ':year' => $year,
+                        ':desc' => $desc)
+                    );
+                    $rank++;
+    
+
+
+
+                }
+               
+        }
+
+        header('Location: index.php');
+        }
+
+        
+    }
 
 ?>
 <!DOCTYPE html>
@@ -50,10 +101,19 @@ header('Location: index.php');
 <input type="text" id="headline" name="headline" size="80"/></p>
 <p>Summary:<br/>
 <textarea id="summary" name="summary" rows="8" cols="80"></textarea>
+
+
 <p>
-<input type="submit"  value="Add" name="add">
+Position: <input type="submit" id="addPos" value="+">
+<div id="position_fields">
+</div>
+</p>
+
+<p>
+<input type="submit"  value="Add" name="add" onclick="validate();">
 <input type="submit" name="cancel" value="Cancel">
 </p>
+
 </form>
     
 </body>
@@ -86,4 +146,33 @@ function validate(){
         }
         return false;
 }
+
+
+//validate position------------------------------------
+countPos=0;
+$(document).ready(function(){
+    window.console && console.log('Document ready called');
+    $('#addPos').click(function(event){
+        // http://api.jquery.com/event.preventdefault/
+        event.preventDefault();
+        if ( countPos >= 9 ) {
+            alert("Maximum of nine position entries exceeded");
+            return;
+        }
+        countPos++;
+        window.console && console.log("Adding position "+countPos);
+        $('#position_fields').append(
+            '<div id="position'+countPos+'"> \
+            <p>Year: <input type="text" name="year'+countPos+'" value="" /> \
+            <input type="button" value="-" \
+                onclick="$(\'#position'+countPos+'\').remove();return false;"></p> \
+            <textarea name="desc'+countPos+'" rows="8" cols="80"></textarea>\
+            </div>');
+    });
+
+
+
+
+
+});
 </script>
