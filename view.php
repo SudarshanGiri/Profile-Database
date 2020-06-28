@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudarshan Giri</title>
+</head>
+<body>
+
+
 <?php
         include 'head.php';
         include 'dbcon.php';
@@ -54,3 +64,6 @@
          ?> <p><a href="index.php">Done</a></p></div><?php
           
 ?>
+    
+</body>
+</html>

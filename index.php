@@ -9,7 +9,7 @@ session_start(); ?>
     <title>Sudarshan Giri</title>
 </head>
 <body>
-    <p><h2>RESUME REGISTRY OF SUDARSHAN GIRI</h2></p>
+    <p><h2>RESUME REGISTRY OF Sudarshan Giri</h2></p>
     <?php
     if(isset($_SESSION['message'])){
         echo $_SESSION['message'];
@@ -21,7 +21,7 @@ session_start(); ?>
 
     }
     else{
-        echo " <p><a href='login.php'> Login</a></p>";
+        echo " <p><a href='login.php'>Please log in</a></p>";
 
 
     }
@@ -67,7 +67,7 @@ session_start(); ?>
            }  ?></table><?php
 
            if(isset($_SESSION['user_id'])){
-            echo " <p><a href='add.php'> Add new Entry</a></p>";
+            echo " <p><a href='add.php'>Add New Entry</a></p>";
     
         }
 

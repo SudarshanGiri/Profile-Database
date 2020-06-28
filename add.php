@@ -20,7 +20,7 @@
                 $year = $_POST['year'.$i];
                 $desc = $_POST['desc'.$i];
                 if ( strlen($year) == 0 || strlen($desc) == 0 ) {
-                    echo "<h2><p class=\"alert-danger text-center\" ><strong>ERROR!!!</strong> All fields are required</p></h2>";
+                    echo "<h2><p class=\"alert-danger text-center\" ><strong>ERROR!!!</strong>All values are required</p></h2>";
                     return false;
                 }
         
@@ -73,6 +73,7 @@
                 }
                
         }
+        $_SESSION['message'] = "Profile added";
 
         header('Location: index.php');
         }
@@ -86,7 +87,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sudarshan Giri</title>
 </head>
 <body>
 <h1>Adding Profile for <?php echo $_SESSION['name']; ?></h1>
@@ -132,7 +133,7 @@ function validate(){
             summary = document.getElementById('summary').value;
             console.log("Validating");
             if (fname == null || fname == "" ||lname==null || lname=="" ||email==null||email==""||headline==""||headline==null||summary==null||summary=="") {
-                alert("All fields must be filled out");
+                alert("All values are required");
                 return false;
             }
             else if(!/@/.test(email)){
