@@ -1,4 +1,4 @@
-<?php include 'head.php'; include 'dbcon.php'; ?>
+<?php include 'head.php'; include 'dbcon.php';    session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,29 +33,32 @@
             $stmt= $pdo->prepare($sql);
             $stmt->execute($data);
 
+            //Remove old position and reinsert again
+            $stmt2 = $pdo->prepare('DELETE FROM position WHERE profile_id=:pid');
+            $stmt2->execute(array( ':pid' => $_REQUEST['profile_id']));
 
-            $rank=1;
+            $rank = 1;
             for($i=1; $i<=9; $i++) {
-                    $year = $_POST['year'.$i];
-                    $desc = $_POST['desc'.$i];
-                    if($year!==null){
+                if ( ! isset($_POST['year'.$i]) ) continue;
+                if ( ! isset($_POST['desc'.$i]) ) continue;
 
-                        $sql2 = "UPDATE position SET rank=:rank, year=:year, description=:desc  WHERE profile_id=$p_id";
-                        $stmt2= $pdo->prepare($sql2);
-                        $stmt2->execute(array(
-                            ':rank' => $rank,
-                            ':year' => $year,
-                            ':desc' => $desc)
-                        );
-                        $rank++;
-        
-    
-    
-    
-                    }
-                   
+                $year = $_POST['year'.$i];
+                $desc = $_POST['desc'.$i];
+                $stmt2 = $pdo->prepare('INSERT INTO position
+                    (profile_id, rank, year, description)
+                    VALUES ( :pid, :rank, :year, :desc)');
+
+                $stmt2->execute(array(
+                ':pid' => $_REQUEST['profile_id'],
+                ':rank' => $rank,
+                ':year' => $year,
+                ':desc' => $desc)
+                );
+
+                $rank++;
+
             }
-
+            
 
             $_SESSION['message'] = "Profile Updated";
 
@@ -68,7 +71,6 @@
 ?>
    
 <?php
-    session_start();
     if(isset($_SESSION['user_id'])){
 
         include 'dbcon.php';
@@ -95,28 +97,37 @@
 
         $sql2="select * from position where profile_id=$p_id and year!='' ";
           $stmt2 = $pdo->prepare($sql2);
-          $stmt2->execute();
-        
-        
+          $stmt2->execute();         
+          
+            ?> <p>Position: <input type="submit" id="addPos" value="+">
+                    <div id="position_fields"></div>
+                </p>
+            <?php
+          
+          
           while($result2 = $stmt2->fetch()){
                   ?>
-                      
-                    <p>Position: <input type="submit" id="addPos" value="+">
-                    <div id="position_fields">
+ 
                     <div id="position1">
                     <p>Year: <input type="text" name="year1" value="<?php echo $result2['year'];?>" />
                     <input type="button" value="-" onclick="$('#position1').remove();return false;">
                     </p>
                     <textarea style="text-align:left;"name="desc1" rows="8" cols="80"><?php echo $result2['description'];?></textarea>
                     </div>
-                    </div></p>
+                    
 
+                    
+
+           <?php }?>
                     <p>
+                    <button type="submit" name='save' value="Save">Save</button>
+                    <input type="submit" name="cancel" value="Cancel">
+                    </p>
                     </form>
 
                   <?php             
-          }
-          ?><p><button type="submit" onclick="validate();" name="save" value="Save">Save</button><?php
+          
+          /*?><p><button type="submit" onclick="validate();" name="save" value="Save">Save</button><?php*/
 
        
                     
